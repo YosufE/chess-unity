@@ -34,21 +34,30 @@ public class ChessPiece : MonoBehaviour
     public void move(Vector3 coordinate)
     {
         GameObject pieceAtCoord = get_piece_at_coord(coordinate);
+        Destroy(pieceAtCoord);
 
         destroy_all_mark_points();
         transform.position = coordinate;
 
-        if (!pieceAtCoord.gameObject.CompareTag(gameObject.tag))
+        timesMoved += 1;
+    }
+
+    public bool up_is_free(Vector3Int coordinate)
+    {
+        Vector3 upperCellCenter = get_center_of_cell(get_cell_up_times(coordinate, 1));
+        Debug.Log(upperCellCenter);
+        if (get_piece_at_coord(upperCellCenter))
         {
-            Destroy(pieceAtCoord.gameObject);
+            Debug.Log(get_piece_at_coord(upperCellCenter));
+            return false;
         }
 
-        timesMoved += 1;
+        return true;
     }
 
     private GameObject get_piece_at_coord(Vector3 coord)
     {
-        GameObject pieceAtCoord = new GameObject();
+        GameObject pieceAtCoord = null;
         List<String> pieceTypes = new List<string>
         {
             "White Piece",
@@ -63,6 +72,7 @@ public class ChessPiece : MonoBehaviour
                 if (coord == chessPiece.transform.position)
                 {
                     pieceAtCoord = chessPiece;
+                    Debug.Log(pieceAtCoord);
                 }
             }
         }
@@ -83,7 +93,7 @@ public class ChessPiece : MonoBehaviour
 
         foreach (var markPoint in markPoints)
         {
-            Destroy(markPoint.gameObject);
+            Destroy(markPoint);
         }
     }
 

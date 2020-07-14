@@ -11,13 +11,9 @@ public class Knight : ChessPiece
         List<Vector3> wholeMoveMapCenterCells = convert_into_whole_move_map_center_cells(wholeMoveMapCells);
         List<Vector3> availableMoves = get_available_moves(wholeMoveMapCenterCells);
         handle_mark_points(availableMoves);
+//        Debug.Log(up_is_free(get_cell_pos()));
     }
     
-    private void Update()
-    {
-    }
-
-
     private new List<Vector3Int> get_whole_move_map_cells()
     {
         // Top Right Corner

@@ -12,7 +12,6 @@
             <e p="Knight.cs" t="Include" />
             <e p="Pawn.cs" t="Include" />
           </e>
-          <e p="DeleteThis.cs" t="Include" />
           <e p="MarkPointController.cs" t="Include" />
         </e>
       </e>
