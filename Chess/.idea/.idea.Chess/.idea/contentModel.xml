@@ -7,10 +7,13 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
-          <e p="ChessPiece.cs" t="Include" />
+          <e p="Chess Pieces" t="Include">
+            <e p="ChessPiece.cs" t="Include" />
+            <e p="Knight.cs" t="Include" />
+            <e p="Pawn.cs" t="Include" />
+          </e>
           <e p="DeleteThis.cs" t="Include" />
-          <e p="Knight.cs" t="Include" />
-          <e p="Pawn.cs" t="Include" />
+          <e p="MarkPointController.cs" t="Include" />
         </e>
       </e>
       <e p="Chess.sln" t="IncludeFlat" />

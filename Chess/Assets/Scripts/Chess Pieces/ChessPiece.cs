@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class ChessPiece : MonoBehaviour
 {
-    public GameObject markPoint;
+    public GameObject markPointPrefab;
     public int timesMoved = 0;
 
     private GridLayout gridLayout;
@@ -30,19 +31,86 @@ public class ChessPiece : MonoBehaviour
 //        move();
 //    }
 
-    private void move()
+    public void move(Vector3 coordinate)
     {
-        Vector3Int pos = get_cell_pos();
-        Vector3Int destinationCell = new Vector3Int {x = 2, y = 2, z = 0};
-        transform.position = grid.GetCellCenterWorld(destinationCell);
+        GameObject pieceAtCoord = get_piece_at_coord(coordinate);
+
+        destroy_all_mark_points();
+        transform.position = coordinate;
+
+        if (!pieceAtCoord.gameObject.CompareTag(gameObject.tag))
+        {
+            Destroy(pieceAtCoord.gameObject);
+        }
+
+        timesMoved += 1;
+    }
+
+    private GameObject get_piece_at_coord(Vector3 coord)
+    {
+        GameObject pieceAtCoord = new GameObject();
+        List<String> pieceTypes = new List<string>
+        {
+            "White Piece",
+            "Black Piece"
+        };
+
+        foreach (var pieceType in pieceTypes)
+        {
+            GameObject[] chessPieces = GameObject.FindGameObjectsWithTag(pieceType);
+            foreach (var chessPiece in chessPieces)
+            {
+                if (coord == chessPiece.transform.position)
+                {
+                    pieceAtCoord = chessPiece;
+                }
+            }
+        }
+
+        return pieceAtCoord;
+    }
+
+    private GameObject[] get_mark_points()
+    {
+        GameObject[] markPoints = GameObject.FindGameObjectsWithTag("Mark Point");
+
+        return markPoints;
+    }
+
+    private void destroy_all_mark_points()
+    {
+        GameObject[] markPoints = get_mark_points();
+
+        foreach (var markPoint in markPoints)
+        {
+            Destroy(markPoint.gameObject);
+        }
     }
 
     public void instantiate_mark_points(List<Vector3> coords)
     {
         foreach (var coord in coords)
         {
-            GameObject go = Instantiate(markPoint);
-            go.transform.position = coord;
+            Vector3 newCoord = coord;
+            newCoord.z -= 1;
+
+            GameObject markPoint = Instantiate(markPointPrefab, newCoord, Quaternion.identity);
+            MarkPointController markPointController = markPoint.GetComponent<MarkPointController>();
+            markPointController.connectedPieceGameObject = this;
+        }
+    }
+
+    public void handle_mark_points(List<Vector3> coords)
+    {
+        GameObject[] markPoints = get_mark_points();
+
+        if (markPoints.Length <= 0)
+        {
+            instantiate_mark_points(coords);
+        }
+        else
+        {
+            destroy_all_mark_points();
         }
     }
 

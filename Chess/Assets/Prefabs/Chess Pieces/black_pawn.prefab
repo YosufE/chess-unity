@@ -122,5 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0

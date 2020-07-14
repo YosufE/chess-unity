@@ -10,8 +10,13 @@ public class Knight : ChessPiece
         List<Vector3Int> wholeMoveMapCells = get_whole_move_map_cells();
         List<Vector3> wholeMoveMapCenterCells = convert_into_whole_move_map_center_cells(wholeMoveMapCells);
         List<Vector3> availableMoves = get_available_moves(wholeMoveMapCenterCells);
-        instantiate_mark_points(availableMoves);
+        handle_mark_points(availableMoves);
     }
+    
+    private void Update()
+    {
+    }
+
 
     private new List<Vector3Int> get_whole_move_map_cells()
     {
