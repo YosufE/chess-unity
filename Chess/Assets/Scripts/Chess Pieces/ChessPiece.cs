@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -33,13 +34,44 @@ public class ChessPiece : MonoBehaviour
 
     public void move(Vector3 coordinate)
     {
-        GameObject pieceAtCoord = get_piece_at_coord(coordinate);
+        Vector3Int oldCell = get_current_cell();
+        Vector3Int newCell = gridLayout.WorldToCell(coordinate);
+        Vector3 newCellCenter = get_center_of_cell(newCell);
+
+        GameObject pieceAtCoord = get_piece_at_coord(newCellCenter);
         Destroy(pieceAtCoord);
 
         destroy_all_mark_points();
-        transform.position = coordinate;
+        transform.position = newCellCenter;
+
+        handle_pawn_rule(oldCell, newCell);
 
         timesMoved += 1;
+    }
+
+    private void handle_pawn_rule(Vector3Int oldCell, Vector3Int newCell)
+    {
+        if (gameObject.GetComponentInChildren(typeof(Pawn)))
+        {
+            // Rule = En Passant
+            if (newCell.y - oldCell.y == 2 || newCell.y - oldCell.y == -2)
+            {
+                GameObject leftPiece = null;
+                GameObject rightPiece = null;
+                leftPiece = get_piece_at_coord(get_center_of_cell(get_cell_left_times(newCell, 1)));
+                rightPiece = get_piece_at_coord(get_center_of_cell(get_cell_right_times(newCell, 1)));
+                GameObject[] pieces = {leftPiece, rightPiece};
+
+                foreach (var piece in pieces)
+                {
+                    if (piece && piece.gameObject.tag != gameObject.tag)
+                    {
+                        Pawn pawnComponent = (Pawn) piece.GetComponentInChildren(typeof(Pawn));
+                        pawnComponent.enPassantRuleLinked.Add(gameObject);
+                    }
+                }
+            }
+        }
     }
 
     public bool is_free(Vector3Int cellPos)
@@ -55,7 +87,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_up()
     {
         List<Vector3Int> allUp = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneUpLast = get_cell_up_times(lastCell, 1);
@@ -69,7 +101,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_down()
     {
         List<Vector3Int> allDown = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneDownLast = get_cell_down_times(lastCell, 1);
@@ -83,7 +115,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_left()
     {
         List<Vector3Int> allLeft = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneLeftLast = get_cell_left_times(lastCell, 1);
@@ -97,7 +129,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_right()
     {
         List<Vector3Int> allRight = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneRightLast = get_cell_right_times(lastCell, 1);
@@ -111,7 +143,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_diagonal_up_right()
     {
         List<Vector3Int> allDiagonalUpRight = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneDiagonalUpRightLast = get_cell_up_times(lastCell, 1);
@@ -126,7 +158,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_diagonal_up_left()
     {
         List<Vector3Int> allDiagonalUpLeft = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneDiagonalUpLeftLast = get_cell_up_times(lastCell, 1);
@@ -141,7 +173,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_diagonal_down_left()
     {
         List<Vector3Int> allDiagonalDownLeft = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneDiagonalDownLeftLast = get_cell_down_times(lastCell, 1);
@@ -156,7 +188,7 @@ public class ChessPiece : MonoBehaviour
     public List<Vector3Int> get_all_diagonal_down_right()
     {
         List<Vector3Int> allDiagonalDownRight = new List<Vector3Int>();
-        Vector3Int lastCell = get_cell_pos();
+        Vector3Int lastCell = get_current_cell();
         for (int i = 0; i < 8; i++)
         {
             Vector3Int oneDiagonalDownRightLast = get_cell_down_times(lastCell, 1);
@@ -171,7 +203,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_up_1()
     {
-        Vector3Int up1 = get_cell_pos();
+        Vector3Int up1 = get_current_cell();
         up1 = get_cell_up_times(up1, 1);
 
         return up1;
@@ -179,7 +211,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_up_2()
     {
-        Vector3Int up2 = get_cell_pos();
+        Vector3Int up2 = get_current_cell();
         up2 = get_cell_up_times(up2, 2);
 
         return up2;
@@ -187,7 +219,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_down_1()
     {
-        Vector3Int down1 = get_cell_pos();
+        Vector3Int down1 = get_current_cell();
         down1 = get_cell_down_times(down1, 1);
 
         return down1;
@@ -195,7 +227,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_down_2()
     {
-        Vector3Int down2 = get_cell_pos();
+        Vector3Int down2 = get_current_cell();
         down2 = get_cell_down_times(down2, 2);
 
         return down2;
@@ -203,7 +235,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_down()
     {
-        Vector3Int down = get_cell_pos();
+        Vector3Int down = get_current_cell();
         down = get_cell_down_times(down, 1);
 
         return down;
@@ -211,7 +243,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_left()
     {
-        Vector3Int left = get_cell_pos();
+        Vector3Int left = get_current_cell();
         left = get_cell_left_times(left, 1);
 
         return left;
@@ -219,7 +251,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_right()
     {
-        Vector3Int right = get_cell_pos();
+        Vector3Int right = get_current_cell();
         right = get_cell_right_times(right, 1);
 
         return right;
@@ -227,7 +259,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_diagonal_up_right()
     {
-        Vector3Int upRight = get_cell_pos();
+        Vector3Int upRight = get_current_cell();
         upRight = get_cell_up_times(upRight, 1);
         upRight = get_cell_right_times(upRight, 1);
 
@@ -236,7 +268,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_diagonal_up_left()
     {
-        Vector3Int upLeft = get_cell_pos();
+        Vector3Int upLeft = get_current_cell();
         upLeft = get_cell_up_times(upLeft, 1);
         upLeft = get_cell_left_times(upLeft, 1);
 
@@ -245,7 +277,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_diagonal_down_left()
     {
-        Vector3Int downLeft = get_cell_pos();
+        Vector3Int downLeft = get_current_cell();
         downLeft = get_cell_down_times(downLeft, 1);
         downLeft = get_cell_left_times(downLeft, 1);
 
@@ -254,7 +286,7 @@ public class ChessPiece : MonoBehaviour
 
     public Vector3Int get_diagonal_down_right()
     {
-        Vector3Int downRight = get_cell_pos();
+        Vector3Int downRight = get_current_cell();
         downRight = get_cell_down_times(downRight, 1);
         downRight = get_cell_right_times(downRight, 1);
 
@@ -315,13 +347,28 @@ public class ChessPiece : MonoBehaviour
         }
     }
 
-    public void handle_mark_points(List<Vector3> coords)
+    public void handle_mark_points(List<Vector3> coords, GameObject obj)
     {
         GameObject[] markPoints = get_mark_points();
 
         if (markPoints.Length <= 0)
         {
             instantiate_mark_points(coords);
+            markPoints = get_mark_points();
+            
+            // Rule = En Passant
+            Pawn pawnComponent = (Pawn) obj.GetComponentInChildren(typeof(Pawn));
+            foreach (var markPoint in markPoints)
+            {
+                MarkPointController markPointController =
+                    (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                
+                foreach (var value in pawnComponent.enPassantRuleLinked)
+                {
+                    markPointController.connectedKillGameObject = value;
+                }
+            }
         }
         else
         {
@@ -402,10 +449,15 @@ public class ChessPiece : MonoBehaviour
         return gameObjectName;
     }
 
-    public Vector3Int get_cell_pos()
+    public Vector3Int get_current_cell()
     {
         Vector3Int cellPosition = gridLayout.WorldToCell(transform.position);
         return cellPosition;
+    }
+
+    public Vector3Int get_cell_from_coord(Vector3 coord)
+    {
+        return gridLayout.WorldToCell(coord);
     }
 
     public Vector3 get_center_of_cell(Vector3Int cellPos)
@@ -416,7 +468,7 @@ public class ChessPiece : MonoBehaviour
 
     private string[] get_chess_lang()
     {
-        Vector3Int cellPos = get_cell_pos();
+        Vector3Int cellPos = get_current_cell();
         String[] converted = new String[2];
 
         String xPos = cellPos[0].ToString();

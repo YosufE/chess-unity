@@ -6,13 +6,14 @@ using UnityEngine;
 public class Pawn : ChessPiece
 {
     public bool inverted;
+    public List<GameObject> enPassantRuleLinked;
 
     private void OnMouseDown()
     {
         List<Vector3Int> wholeMoveMapCells = get_whole_move_map_cells();
         List<Vector3> wholeMoveMapCenterCells = convert_into_whole_move_map_center_cells(wholeMoveMapCells);
         List<Vector3> filteredMoves = filter_out_own_pieces_and_outer_ones(wholeMoveMapCenterCells);
-        handle_mark_points(filteredMoves);
+        handle_mark_points(filteredMoves, gameObject);
     }
 
     private new List<Vector3Int> get_whole_move_map_cells()
@@ -51,6 +52,19 @@ public class Pawn : ChessPiece
             {
                 cells.Add(down2);
             }
+
+            foreach (var obj in enPassantRuleLinked)
+            {
+                if (obj != null)
+                {
+                    if (is_free(get_cell_from_coord(obj.transform.position)) == false)
+                    {
+                        Vector3Int cellBelowLinkedPiece = new Vector3Int();
+                        cellBelowLinkedPiece = get_cell_down_times(get_cell_from_coord(obj.transform.position), 1);
+                        cells.Add(cellBelowLinkedPiece);
+                    }
+                }
+            }
         }
         else
         {
@@ -72,6 +86,19 @@ public class Pawn : ChessPiece
             if (timesMoved == 0 && is_free(up1) && is_free(up2))
             {
                 cells.Add(up2);
+            }
+            
+            foreach (var obj in enPassantRuleLinked)
+            {
+                if (obj != null)
+                {
+                    if (is_free(get_cell_from_coord(obj.transform.position)) == false)
+                    {
+                        Vector3Int cellAboveLinkedPiece = new Vector3Int();
+                        cellAboveLinkedPiece = get_cell_up_times(get_cell_from_coord(obj.transform.position), 1);
+                        cells.Add(cellAboveLinkedPiece);
+                    }
+                }
             }
         }
 
