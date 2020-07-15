@@ -355,18 +355,20 @@ public class ChessPiece : MonoBehaviour
         {
             instantiate_mark_points(coords);
             markPoints = get_mark_points();
-            
-            // Rule = En Passant
-            Pawn pawnComponent = (Pawn) obj.GetComponentInChildren(typeof(Pawn));
-            foreach (var markPoint in markPoints)
-            {
-                MarkPointController markPointController =
-                    (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
 
-                
-                foreach (var value in pawnComponent.enPassantRuleLinked)
+            // Rule = En Passant
+            if (gameObject.GetComponentInChildren(typeof(Pawn)))
+            {
+                Pawn pawnComponent = (Pawn) obj.GetComponentInChildren(typeof(Pawn));
+                foreach (var markPoint in markPoints)
                 {
-                    markPointController.connectedKillGameObject = value;
+                    MarkPointController markPointController =
+                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                    foreach (var ob in pawnComponent.enPassantRuleLinked)
+                    {
+                        markPointController.connectedKillGameObject = ob;
+                    }
                 }
             }
         }
