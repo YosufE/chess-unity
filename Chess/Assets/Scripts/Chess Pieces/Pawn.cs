@@ -37,7 +37,7 @@ public class Pawn : ChessPiece
             cells.Add(up1);
         }
 
-        if (timesMoved == 0 && is_free(up2))
+        if (timesMoved == 0 && is_free(up1) && is_free(up2))
         {
             cells.Add(up2);
         }
