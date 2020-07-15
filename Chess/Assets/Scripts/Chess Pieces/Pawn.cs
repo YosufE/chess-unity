@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Pawn : ChessPiece
 {
+    public bool inverted;
+
     private void OnMouseDown()
     {
         List<Vector3Int> wholeMoveMapCells = get_whole_move_map_cells();
@@ -17,32 +19,63 @@ public class Pawn : ChessPiece
     {
         Vector3Int up1 = get_up_1();
         Vector3Int up2 = get_up_2();
-        Vector3Int upRight = get_diagonal_up_right();
-        Vector3Int upLeft = get_diagonal_up_left();
+        Vector3Int diagonalUpRight = get_diagonal_up_right();
+        Vector3Int diagonalUpLeft = get_diagonal_up_left();
+
+        Vector3Int down1 = get_down_1();
+        Vector3Int down2 = get_down_2();
+        Vector3Int diagonalDownRight = get_diagonal_down_right();
+        Vector3Int diagonalDownLeft = get_diagonal_down_left();
+
 
         List<Vector3Int> cells = new List<Vector3Int>();
-        
-        if (is_free(upRight) == false)
+
+        if (inverted)
         {
-            cells.Add(upRight);
+            if (is_free(diagonalDownRight) == false)
+            {
+                cells.Add(diagonalDownRight);
+            }
+
+            if (is_free(diagonalDownLeft) == false)
+            {
+                cells.Add(diagonalDownLeft);
+            }
+
+            if (is_free(down1))
+            {
+                cells.Add(down1);
+            }
+
+            if (timesMoved == 0 && is_free(down1) && is_free(down2))
+            {
+                cells.Add(down2);
+            }
+        }
+        else
+        {
+            if (is_free(diagonalUpRight) == false)
+            {
+                cells.Add(diagonalUpRight);
+            }
+
+            if (is_free(diagonalUpLeft) == false)
+            {
+                cells.Add(diagonalUpLeft);
+            }
+
+            if (is_free(up1))
+            {
+                cells.Add(up1);
+            }
+
+            if (timesMoved == 0 && is_free(up1) && is_free(up2))
+            {
+                cells.Add(up2);
+            }
         }
 
-        if (is_free(upLeft) == false)
-        {
-            cells.Add(upLeft);
-        }
-
-        if (is_free(up1))
-        {
-            cells.Add(up1);
-        }
-
-        if (timesMoved == 0 && is_free(up1) && is_free(up2))
-        {
-            cells.Add(up2);
-        }
 
         return cells;
     }
-
 }

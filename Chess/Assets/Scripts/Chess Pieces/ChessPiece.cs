@@ -185,6 +185,22 @@ public class ChessPiece : MonoBehaviour
         return up2;
     }
 
+    public Vector3Int get_down_1()
+    {
+        Vector3Int down1 = get_cell_pos();
+        down1 = get_cell_down_times(down1, 1);
+
+        return down1;
+    }
+
+    public Vector3Int get_down_2()
+    {
+        Vector3Int down2 = get_cell_pos();
+        down2 = get_cell_down_times(down2, 2);
+
+        return down2;
+    }
+
     public Vector3Int get_down()
     {
         Vector3Int down = get_cell_pos();

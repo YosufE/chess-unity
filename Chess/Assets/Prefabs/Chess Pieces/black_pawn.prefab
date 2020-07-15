@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3449143713453843015}
   - component: {fileID: 8701979800504731996}
   - component: {fileID: 1230178564848855904}
-  - component: {fileID: 971026758828993462}
+  - component: {fileID: 1718884058176748906}
   m_Layer: 0
   m_Name: black_pawn
   m_TagString: Black Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &971026758828993462
+--- !u!114 &1718884058176748906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,9 +119,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3985603658691322112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a2f528aad40d4d4ea6a1a36011400db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
     type: 3}
   timesMoved: 0
+  inverted: 1
