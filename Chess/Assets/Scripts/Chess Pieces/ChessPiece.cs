@@ -41,21 +41,122 @@ public class ChessPiece : MonoBehaviour
 
         timesMoved += 1;
     }
-
-    public bool up_is_free(Vector3Int coordinate)
+    
+    public bool is_free(Vector3Int cellPos)
     {
-        Vector3 upperCellCenter = get_center_of_cell(get_cell_up_times(coordinate, 1));
-        Debug.Log(upperCellCenter);
-        if (get_piece_at_coord(upperCellCenter))
+        if (get_piece_at_coord(get_center_of_cell(cellPos)))
         {
-            Debug.Log(get_piece_at_coord(upperCellCenter));
             return false;
         }
 
         return true;
     }
 
-    private GameObject get_piece_at_coord(Vector3 coord)
+    public bool up_is_free(Vector3Int coordinate)
+    {
+        Vector3Int upCell = get_cell_up_times(coordinate, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(upCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool down_is_free(Vector3Int coordinate)
+    {
+        Vector3Int downCell = get_cell_down_times(coordinate, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(downCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool left_is_free(Vector3Int coordinate)
+    {
+        Vector3Int leftCell = get_cell_left_times(coordinate, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(leftCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public bool right_is_free(Vector3Int coordinate)
+    {
+        Vector3Int rightCell = get_cell_right_times(coordinate, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(rightCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public bool up_right_is_free(Vector3Int coordinate)
+    {
+        Vector3Int upRightCell = get_cell_up_times(coordinate, 1);
+        upRightCell = get_cell_right_times(upRightCell, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(upRightCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool up_left_is_free(Vector3Int coordinate)
+    {
+        Vector3Int upLeftCell = get_cell_up_times(coordinate, 1);
+        upLeftCell = get_cell_left_times(upLeftCell, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(upLeftCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public bool down_right_is_free(Vector3Int coordinate)
+    {
+        Vector3Int downRightCell = get_cell_down_times(coordinate, 1);
+        downRightCell = get_cell_right_times(downRightCell, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(downRightCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public bool down_left_is_free(Vector3Int coordinate)
+    {
+        Vector3Int downLeftCell = get_cell_down_times(coordinate, 1);
+        downLeftCell = get_cell_left_times(downLeftCell, 1);
+
+        if (get_piece_at_coord(get_center_of_cell(downLeftCell)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public GameObject get_piece_at_coord(Vector3 coord)
     {
         GameObject pieceAtCoord = null;
         List<String> pieceTypes = new List<string>
@@ -72,7 +173,6 @@ public class ChessPiece : MonoBehaviour
                 if (coord == chessPiece.transform.position)
                 {
                     pieceAtCoord = chessPiece;
-                    Debug.Log(pieceAtCoord);
                 }
             }
         }
@@ -129,7 +229,7 @@ public class ChessPiece : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public List<Vector3> get_available_moves(List<Vector3> wholeMoveMapCenterCells)
+    public List<Vector3> filter_out_own_pieces_and_outer_ones(List<Vector3> wholeMoveMapCenterCells)
     {
         List<Vector3> availableMoves = new List<Vector3>();
         GameObject[] currentPieceColorObjects = GameObject.FindGameObjectsWithTag(gameObject.tag);

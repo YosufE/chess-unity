@@ -9,8 +9,8 @@ public class Pawn : ChessPiece
     {
         List<Vector3Int> wholeMoveMapCells = get_whole_move_map_cells();
         List<Vector3> wholeMoveMapCenterCells = convert_into_whole_move_map_center_cells(wholeMoveMapCells);
-        List<Vector3> availableMoves = get_available_moves(wholeMoveMapCenterCells);
-        handle_mark_points(availableMoves);
+        List<Vector3> filteredMoves = filter_out_own_pieces_and_outer_ones(wholeMoveMapCenterCells);
+        handle_mark_points(filteredMoves);
     }
 
     private new List<Vector3Int> get_whole_move_map_cells()
@@ -19,15 +19,28 @@ public class Pawn : ChessPiece
         Vector3Int up2 = get_up_2();
         Vector3Int upRight = get_diagonal_up_right();
         Vector3Int upLeft = get_diagonal_up_left();
-        
 
-        List<Vector3Int> coords = new List<Vector3Int>
+        List<Vector3Int> coords = new List<Vector3Int>();
+        
+        if (is_free(upRight) == false)
         {
-            up1,
-            up2,
-            upRight,
-            upLeft
-        };
+            coords.Add(upRight);
+        }
+
+        if (is_free(upLeft) == false)
+        {
+            coords.Add(upLeft);
+        }
+
+        if (is_free(up1))
+        {
+            coords.Add(up1);
+        }
+
+        if (timesMoved == 0 && is_free(up2))
+        {
+            coords.Add(up2);
+        }
 
         return coords;
     }
