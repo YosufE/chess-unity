@@ -41,7 +41,7 @@ public class ChessPiece : MonoBehaviour
 
         timesMoved += 1;
     }
-    
+
     public bool is_free(Vector3Int cellPos)
     {
         if (get_piece_at_coord(get_center_of_cell(cellPos)))
@@ -51,9 +51,7 @@ public class ChessPiece : MonoBehaviour
 
         return true;
     }
-    
-    
-    
+
     public List<Vector3Int> get_all_up()
     {
         List<Vector3Int> allUp = new List<Vector3Int>();
@@ -68,7 +66,6 @@ public class ChessPiece : MonoBehaviour
         return allUp;
     }
 
-
     public List<Vector3Int> get_all_down()
     {
         List<Vector3Int> allDown = new List<Vector3Int>();
@@ -82,8 +79,7 @@ public class ChessPiece : MonoBehaviour
 
         return allDown;
     }
-    
-    
+
     public List<Vector3Int> get_all_left()
     {
         List<Vector3Int> allLeft = new List<Vector3Int>();
@@ -97,8 +93,7 @@ public class ChessPiece : MonoBehaviour
 
         return allLeft;
     }
-    
-    
+
     public List<Vector3Int> get_all_right()
     {
         List<Vector3Int> allRight = new List<Vector3Int>();
@@ -112,6 +107,68 @@ public class ChessPiece : MonoBehaviour
 
         return allRight;
     }
+    
+    public List<Vector3Int> get_all_diagonal_up_right()
+    {
+        List<Vector3Int> allDiagonalUpRight= new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
+        {
+            Vector3Int oneDiagonalUpRightLast = get_cell_up_times(lastCell, 1);
+            oneDiagonalUpRightLast = get_cell_right_times(oneDiagonalUpRightLast, 1);
+            allDiagonalUpRight.Add(oneDiagonalUpRightLast);
+            lastCell = oneDiagonalUpRightLast;
+        }
+
+        return allDiagonalUpRight;
+    }
+    
+    public List<Vector3Int> get_all_diagonal_up_left()
+    {
+        List<Vector3Int> allDiagonalUpLeft = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
+        {
+            Vector3Int oneDiagonalUpLeftLast = get_cell_up_times(lastCell, 1);
+            oneDiagonalUpLeftLast = get_cell_left_times(oneDiagonalUpLeftLast, 1);
+            allDiagonalUpLeft.Add(oneDiagonalUpLeftLast);
+            lastCell = oneDiagonalUpLeftLast;
+        }
+
+        return allDiagonalUpLeft;
+    }
+    
+    public List<Vector3Int> get_all_diagonal_down_left()
+    {
+        List<Vector3Int> allDiagonalDownLeft = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
+        {
+            Vector3Int oneDiagonalDownLeftLast = get_cell_down_times(lastCell, 1);
+            oneDiagonalDownLeftLast = get_cell_left_times(oneDiagonalDownLeftLast, 1);
+            allDiagonalDownLeft.Add(oneDiagonalDownLeftLast);
+            lastCell = oneDiagonalDownLeftLast;
+        }
+
+        return allDiagonalDownLeft;
+    }
+    
+    
+    public List<Vector3Int> get_all_diagonal_down_right()
+    {
+        List<Vector3Int> allDiagonalDownRight = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
+        {
+            Vector3Int oneDiagonalDownRightLast = get_cell_down_times(lastCell, 1);
+            oneDiagonalDownRightLast = get_cell_right_times(oneDiagonalDownRightLast, 1);
+            allDiagonalDownRight.Add(oneDiagonalDownRightLast);
+            lastCell = oneDiagonalDownRightLast;
+        }
+
+        return allDiagonalDownRight;
+    }
+    
 
     public GameObject get_piece_at_coord(Vector3 coord)
     {

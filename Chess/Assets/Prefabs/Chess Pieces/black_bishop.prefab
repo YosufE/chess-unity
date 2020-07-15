@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7517091447423721285}
   - component: {fileID: 6341705035316537828}
   - component: {fileID: 5746288798198818772}
-  - component: {fileID: -6690965793921885563}
+  - component: {fileID: 4844652277058710223}
   m_Layer: 0
   m_Name: black_bishop
   m_TagString: Black Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-6690965793921885563
+--- !u!114 &4844652277058710223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7272476184420201349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: 46baf5967e31290488b8d59dd78694ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0

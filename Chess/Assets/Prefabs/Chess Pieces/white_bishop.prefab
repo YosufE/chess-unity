@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1010130202429678320}
   - component: {fileID: 3514886136655776600}
   - component: {fileID: 7011830651036770478}
-  - component: {fileID: -7596498485792572430}
+  - component: {fileID: 812628729378756917}
   m_Layer: 0
   m_Name: white_bishop
   m_TagString: White Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-7596498485792572430
+--- !u!114 &812628729378756917
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6799654724066781172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: 46baf5967e31290488b8d59dd78694ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0
