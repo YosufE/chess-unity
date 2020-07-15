@@ -20,29 +20,29 @@ public class Pawn : ChessPiece
         Vector3Int upRight = get_diagonal_up_right();
         Vector3Int upLeft = get_diagonal_up_left();
 
-        List<Vector3Int> coords = new List<Vector3Int>();
+        List<Vector3Int> cells = new List<Vector3Int>();
         
         if (is_free(upRight) == false)
         {
-            coords.Add(upRight);
+            cells.Add(upRight);
         }
 
         if (is_free(upLeft) == false)
         {
-            coords.Add(upLeft);
+            cells.Add(upLeft);
         }
 
         if (is_free(up1))
         {
-            coords.Add(up1);
+            cells.Add(up1);
         }
 
         if (timesMoved == 0 && is_free(up2))
         {
-            coords.Add(up2);
+            cells.Add(up2);
         }
 
-        return coords;
+        return cells;
     }
 
     private Vector3Int get_up_1()

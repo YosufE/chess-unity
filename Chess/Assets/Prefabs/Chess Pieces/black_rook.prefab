@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4281107010954234087}
   - component: {fileID: 5509531136188203539}
   - component: {fileID: 2576178998200040066}
-  - component: {fileID: 2475665533678336454}
+  - component: {fileID: 6626301609020839558}
   m_Layer: 0
   m_Name: black_rook
   m_TagString: Black Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2475665533678336454
+--- !u!114 &6626301609020839558
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3995354531314110481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: c63991ff5ad489041b88d6d5f1ac77f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0

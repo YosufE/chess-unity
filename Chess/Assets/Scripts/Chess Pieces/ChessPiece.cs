@@ -51,109 +51,66 @@ public class ChessPiece : MonoBehaviour
 
         return true;
     }
-
-    public bool up_is_free(Vector3Int coordinate)
+    
+    
+    
+    public List<Vector3Int> get_all_up()
     {
-        Vector3Int upCell = get_cell_up_times(coordinate, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(upCell)))
+        List<Vector3Int> allUp = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
         {
-            return false;
+            Vector3Int oneUpLast = get_cell_up_times(lastCell, 1);
+            allUp.Add(oneUpLast);
+            lastCell = oneUpLast;
         }
 
-        return true;
-    }
-
-    public bool down_is_free(Vector3Int coordinate)
-    {
-        Vector3Int downCell = get_cell_down_times(coordinate, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(downCell)))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public bool left_is_free(Vector3Int coordinate)
-    {
-        Vector3Int leftCell = get_cell_left_times(coordinate, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(leftCell)))
-        {
-            return false;
-        }
-
-        return true;
+        return allUp;
     }
 
 
-    public bool right_is_free(Vector3Int coordinate)
+    public List<Vector3Int> get_all_down()
     {
-        Vector3Int rightCell = get_cell_right_times(coordinate, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(rightCell)))
+        List<Vector3Int> allDown = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
         {
-            return false;
+            Vector3Int oneDownLast = get_cell_down_times(lastCell, 1);
+            allDown.Add(oneDownLast);
+            lastCell = oneDownLast;
         }
 
-        return true;
+        return allDown;
     }
-
-
-    public bool up_right_is_free(Vector3Int coordinate)
+    
+    
+    public List<Vector3Int> get_all_left()
     {
-        Vector3Int upRightCell = get_cell_up_times(coordinate, 1);
-        upRightCell = get_cell_right_times(upRightCell, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(upRightCell)))
+        List<Vector3Int> allLeft = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
         {
-            return false;
+            Vector3Int oneLeftLast = get_cell_left_times(lastCell, 1);
+            allLeft.Add(oneLeftLast);
+            lastCell = oneLeftLast;
         }
 
-        return true;
+        return allLeft;
     }
-
-    public bool up_left_is_free(Vector3Int coordinate)
+    
+    
+    public List<Vector3Int> get_all_right()
     {
-        Vector3Int upLeftCell = get_cell_up_times(coordinate, 1);
-        upLeftCell = get_cell_left_times(upLeftCell, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(upLeftCell)))
+        List<Vector3Int> allRight = new List<Vector3Int>();
+        Vector3Int lastCell = get_cell_pos();
+        for (int i = 0; i < 8; i++)
         {
-            return false;
+            Vector3Int oneRightLast = get_cell_right_times(lastCell, 1);
+            allRight.Add(oneRightLast);
+            lastCell = oneRightLast;
         }
 
-        return true;
-    }
-
-
-    public bool down_right_is_free(Vector3Int coordinate)
-    {
-        Vector3Int downRightCell = get_cell_down_times(coordinate, 1);
-        downRightCell = get_cell_right_times(downRightCell, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(downRightCell)))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    public bool down_left_is_free(Vector3Int coordinate)
-    {
-        Vector3Int downLeftCell = get_cell_down_times(coordinate, 1);
-        downLeftCell = get_cell_left_times(downLeftCell, 1);
-
-        if (get_piece_at_coord(get_center_of_cell(downLeftCell)))
-        {
-            return false;
-        }
-
-        return true;
+        return allRight;
     }
 
     public GameObject get_piece_at_coord(Vector3 coord)

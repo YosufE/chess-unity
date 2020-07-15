@@ -31,7 +31,7 @@ public class Knight : ChessPiece
         Vector3Int bottomRight = get_bottom_right();
         Vector3Int rightBottom = get_right_bottom();
 
-        List<Vector3Int> coords = new List<Vector3Int>
+        List<Vector3Int> cells = new List<Vector3Int>
         {
             topRight,
             rightTop,
@@ -43,7 +43,7 @@ public class Knight : ChessPiece
             rightBottom
         };
 
-        return coords;
+        return cells;
     }
 
     private Vector3Int get_top_right()

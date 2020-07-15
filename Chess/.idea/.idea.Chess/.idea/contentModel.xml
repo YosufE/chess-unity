@@ -11,6 +11,7 @@
             <e p="ChessPiece.cs" t="Include" />
             <e p="Knight.cs" t="Include" />
             <e p="Pawn.cs" t="Include" />
+            <e p="Rook.cs" t="Include" />
           </e>
           <e p="MarkPointController.cs" t="Include" />
         </e>

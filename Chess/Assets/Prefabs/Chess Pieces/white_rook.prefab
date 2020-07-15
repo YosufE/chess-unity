@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1662214047296773425}
   - component: {fileID: 6518451545564132804}
   - component: {fileID: 5772578197412039585}
-  - component: {fileID: 6989618890039874004}
+  - component: {fileID: 6196238379821645574}
   m_Layer: 0
   m_Name: white_rook
   m_TagString: White Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6989618890039874004
+--- !u!114 &6196238379821645574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 390699121962454058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: c63991ff5ad489041b88d6d5f1ac77f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0
