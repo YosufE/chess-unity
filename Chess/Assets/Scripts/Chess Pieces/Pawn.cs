@@ -45,37 +45,4 @@ public class Pawn : ChessPiece
         return cells;
     }
 
-    private Vector3Int get_up_1()
-    {
-        Vector3Int up1 = get_cell_pos();
-        up1 = get_cell_up_times(up1, 1);
-
-        return up1;
-    }
-
-    private Vector3Int get_up_2()
-    {
-        Vector3Int up2 = get_cell_pos();
-        up2 = get_cell_up_times(up2, 2);
-
-        return up2;
-    }
-
-    private Vector3Int get_diagonal_up_right()
-    {
-        Vector3Int up2 = get_cell_pos();
-        up2 = get_cell_up_times(up2, 1);
-        up2 = get_cell_right_times(up2, 1);
-
-        return up2;
-    }
-
-    private Vector3Int get_diagonal_up_left()
-    {
-        Vector3Int up2 = get_cell_pos();
-        up2 = get_cell_up_times(up2, 1);
-        up2 = get_cell_left_times(up2, 1);
-
-        return up2;
-    }
 }

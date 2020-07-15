@@ -107,10 +107,10 @@ public class ChessPiece : MonoBehaviour
 
         return allRight;
     }
-    
+
     public List<Vector3Int> get_all_diagonal_up_right()
     {
-        List<Vector3Int> allDiagonalUpRight= new List<Vector3Int>();
+        List<Vector3Int> allDiagonalUpRight = new List<Vector3Int>();
         Vector3Int lastCell = get_cell_pos();
         for (int i = 0; i < 8; i++)
         {
@@ -122,7 +122,7 @@ public class ChessPiece : MonoBehaviour
 
         return allDiagonalUpRight;
     }
-    
+
     public List<Vector3Int> get_all_diagonal_up_left()
     {
         List<Vector3Int> allDiagonalUpLeft = new List<Vector3Int>();
@@ -137,7 +137,7 @@ public class ChessPiece : MonoBehaviour
 
         return allDiagonalUpLeft;
     }
-    
+
     public List<Vector3Int> get_all_diagonal_down_left()
     {
         List<Vector3Int> allDiagonalDownLeft = new List<Vector3Int>();
@@ -152,8 +152,7 @@ public class ChessPiece : MonoBehaviour
 
         return allDiagonalDownLeft;
     }
-    
-    
+
     public List<Vector3Int> get_all_diagonal_down_right()
     {
         List<Vector3Int> allDiagonalDownRight = new List<Vector3Int>();
@@ -168,7 +167,83 @@ public class ChessPiece : MonoBehaviour
 
         return allDiagonalDownRight;
     }
-    
+
+
+    public Vector3Int get_up_1()
+    {
+        Vector3Int up1 = get_cell_pos();
+        up1 = get_cell_up_times(up1, 1);
+
+        return up1;
+    }
+
+    public Vector3Int get_up_2()
+    {
+        Vector3Int up2 = get_cell_pos();
+        up2 = get_cell_up_times(up2, 2);
+
+        return up2;
+    }
+
+    public Vector3Int get_down()
+    {
+        Vector3Int down = get_cell_pos();
+        down = get_cell_down_times(down, 1);
+
+        return down;
+    }
+
+    public Vector3Int get_left()
+    {
+        Vector3Int left = get_cell_pos();
+        left = get_cell_left_times(left, 1);
+
+        return left;
+    }
+
+    public Vector3Int get_right()
+    {
+        Vector3Int right = get_cell_pos();
+        right = get_cell_right_times(right, 1);
+
+        return right;
+    }
+
+    public Vector3Int get_diagonal_up_right()
+    {
+        Vector3Int upRight = get_cell_pos();
+        upRight = get_cell_up_times(upRight, 1);
+        upRight = get_cell_right_times(upRight, 1);
+
+        return upRight;
+    }
+
+    public Vector3Int get_diagonal_up_left()
+    {
+        Vector3Int upLeft = get_cell_pos();
+        upLeft = get_cell_up_times(upLeft, 1);
+        upLeft = get_cell_left_times(upLeft, 1);
+
+        return upLeft;
+    }
+
+    public Vector3Int get_diagonal_down_left()
+    {
+        Vector3Int downLeft = get_cell_pos();
+        downLeft = get_cell_down_times(downLeft, 1);
+        downLeft = get_cell_left_times(downLeft, 1);
+
+        return downLeft;
+    }
+
+    public Vector3Int get_diagonal_down_right()
+    {
+        Vector3Int downRight = get_cell_pos();
+        downRight = get_cell_down_times(downRight, 1);
+        downRight = get_cell_right_times(downRight, 1);
+
+        return downRight;
+    }
 
     public GameObject get_piece_at_coord(Vector3 coord)
     {

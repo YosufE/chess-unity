@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6947153463350180730}
   - component: {fileID: 587015766521872374}
   - component: {fileID: 5747199936556783255}
-  - component: {fileID: 290801605115192286}
+  - component: {fileID: 4256935177041480350}
   m_Layer: 0
   m_Name: black_king
   m_TagString: Black Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &290801605115192286
+--- !u!114 &4256935177041480350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4169374135200080748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: c177da6421744f44586ed538f29b74d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0
