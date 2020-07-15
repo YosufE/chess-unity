@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7895156032874692239}
   - component: {fileID: 7883784017246173986}
   - component: {fileID: 8360063274756652475}
-  - component: {fileID: 4421208637009344200}
+  - component: {fileID: 3720517054132604066}
   m_Layer: 0
   m_Name: black_queen
   m_TagString: Black Piece
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4421208637009344200
+--- !u!114 &3720517054132604066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8267883754337054388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adeb586fb361eb14da0607d9ea76a498, type: 3}
+  m_Script: {fileID: 11500000, guid: a656a424880f4eb48a6fc00b46455dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markPoint: {fileID: 0}
+  markPointPrefab: {fileID: 2195724441178296488, guid: 04814c5294b63a24298ccdd541ee158e,
+    type: 3}
   timesMoved: 0
