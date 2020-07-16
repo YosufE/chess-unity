@@ -14,7 +14,7 @@ public class ChessPiece : MonoBehaviour
     private Grid grid;
     private Tilemap tilemap;
 
-    private void Awake()
+    public void Awake()
     {
         gridLayout = transform.parent.GetComponentInParent<GridLayout>();
         grid = transform.parent.GetComponentInParent<Grid>();
@@ -45,9 +45,53 @@ public class ChessPiece : MonoBehaviour
         transform.position = newCellCenter;
 
         handle_pawn_rule(oldCell, newCell);
+        handle_castling_rule(oldCell, newCell);
 
         timesMoved += 1;
     }
+
+    private void handle_castling_rule(Vector3Int oldCell, Vector3Int newCell)
+    {
+        GameObject obj = gameObject;
+        GameObject[] markPoints = get_mark_points();
+        King kingComponent = (King) obj.GetComponentInChildren(typeof(King));
+
+        if (gameObject.GetComponentInChildren(typeof(King)) && timesMoved == 0)
+        {
+            // Left Rook
+            if (newCell.x - oldCell.x == -2)
+            {
+                foreach (var markPoint in markPoints)
+                {
+                    MarkPointController markPointController =
+                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                    if (kingComponent.leftRookCellDestination ==
+                        get_cell_from_coord(markPointController.transform.position))
+                    {
+                        kingComponent.castlingConnectedLeftRook.move(kingComponent.leftRookCellDestination);
+                    }
+                }
+            }
+
+            // Right Rook
+            if (newCell.x - oldCell.x == 2)
+            {
+                foreach (var markPoint in markPoints)
+                {
+                    MarkPointController markPointController =
+                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                    if (kingComponent.rightRookCellDestination ==
+                        get_cell_from_coord(markPointController.transform.position))
+                    {
+                        kingComponent.castlingConnectedRighttRook.move(kingComponent.rightRookCellDestination);
+                    }
+                }
+            }
+        }
+    }
+
 
     private void handle_pawn_rule(Vector3Int oldCell, Vector3Int newCell)
     {
@@ -356,25 +400,30 @@ public class ChessPiece : MonoBehaviour
             instantiate_mark_points(coords);
             markPoints = get_mark_points();
 
-            // Rule = En Passant
-            if (gameObject.GetComponentInChildren(typeof(Pawn)))
-            {
-                Pawn pawnComponent = (Pawn) obj.GetComponentInChildren(typeof(Pawn));
-                foreach (var markPoint in markPoints)
-                {
-                    MarkPointController markPointController =
-                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
-
-                    foreach (var ob in pawnComponent.enPassantRuleLinked)
-                    {
-                        markPointController.connectedKillGameObject = ob;
-                    }
-                }
-            }
+            link_en_passant_rule_objs_to_mark_points(obj, markPoints);
         }
         else
         {
             destroy_all_mark_points();
+        }
+    }
+
+
+    private void link_en_passant_rule_objs_to_mark_points(GameObject obj, GameObject[] markPoints)
+    {
+        if (gameObject.GetComponentInChildren(typeof(Pawn)))
+        {
+            Pawn pawnComponent = (Pawn) obj.GetComponentInChildren(typeof(Pawn));
+            foreach (var markPoint in markPoints)
+            {
+                MarkPointController markPointController =
+                    (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                foreach (var ob in pawnComponent.enPassantRuleLinked)
+                {
+                    markPointController.connectedKillGameObject = ob;
+                }
+            }
         }
     }
 

@@ -12,7 +12,9 @@ public class MarkPointController : MonoBehaviour
     {
         Vector3 pieceCoord = transform.position;
         pieceCoord.z += 1;
+        
         Destroy(connectedKillGameObject);
+        
         connectedPieceGameObject.move(pieceCoord);
     }
 }
