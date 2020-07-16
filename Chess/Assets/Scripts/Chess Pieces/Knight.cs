@@ -10,7 +10,7 @@ public class Knight : ChessPiece
         List<Vector3Int> wholeMoveMapCells = get_whole_move_map_cells();
         List<Vector3> wholeMoveMapCenterCells = convert_into_whole_move_map_center_cells(wholeMoveMapCells);
         List<Vector3> filteredMoves = filter_out_own_pieces_and_outer_ones(wholeMoveMapCenterCells);
-        handle_mark_points(filteredMoves, gameObject);
+        handle_mark_points(filteredMoves);
     }
 
     private new List<Vector3Int> get_whole_move_map_cells()

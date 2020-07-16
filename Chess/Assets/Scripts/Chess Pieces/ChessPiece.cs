@@ -127,7 +127,7 @@ public class ChessPiece : MonoBehaviour
         }
     }
 
-    public void handle_mark_points(List<Vector3> coords, GameObject obj)
+    public void handle_mark_points(List<Vector3> coords)
     {
         GameObject[] markPoints = get_mark_points();
 
