@@ -44,78 +44,22 @@ public class ChessPiece : MonoBehaviour
         destroy_all_mark_points();
         transform.position = newCellCenter;
 
-        handle_pawn_rule(oldCell, newCell);
-        handle_castling_rule(oldCell, newCell);
+        // Rule handling
+        // ---- Pawn ----
+        Pawn pawnComponent = (Pawn) GetComponentInChildren(typeof(Pawn));
+        if (pawnComponent)
+        {
+            pawnComponent.handle_en_passant(oldCell, newCell);
+        }
+
+        // ---- King ----
+        King kingComponent = (King) GetComponentInChildren(typeof(King));
+        if (kingComponent)
+        {
+            kingComponent.handle_castling_rule(oldCell, newCell);
+        }
 
         timesMoved += 1;
-    }
-
-    private void handle_castling_rule(Vector3Int oldCell, Vector3Int newCell)
-    {
-        GameObject obj = gameObject;
-        GameObject[] markPoints = get_mark_points();
-        King kingComponent = (King) obj.GetComponentInChildren(typeof(King));
-
-        if (gameObject.GetComponentInChildren(typeof(King)) && timesMoved == 0)
-        {
-            // Left Rook
-            if (newCell.x - oldCell.x == -2)
-            {
-                foreach (var markPoint in markPoints)
-                {
-                    MarkPointController markPointController =
-                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
-
-                    if (kingComponent.leftRookCellDestination ==
-                        get_cell_from_coord(markPointController.transform.position))
-                    {
-                        kingComponent.castlingConnectedLeftRook.move(kingComponent.leftRookCellDestination);
-                    }
-                }
-            }
-
-            // Right Rook
-            if (newCell.x - oldCell.x == 2)
-            {
-                foreach (var markPoint in markPoints)
-                {
-                    MarkPointController markPointController =
-                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
-
-                    if (kingComponent.rightRookCellDestination ==
-                        get_cell_from_coord(markPointController.transform.position))
-                    {
-                        kingComponent.castlingConnectedRighttRook.move(kingComponent.rightRookCellDestination);
-                    }
-                }
-            }
-        }
-    }
-
-
-    private void handle_pawn_rule(Vector3Int oldCell, Vector3Int newCell)
-    {
-        if (gameObject.GetComponentInChildren(typeof(Pawn)))
-        {
-            // Rule = En Passant
-            if (newCell.y - oldCell.y == 2 || newCell.y - oldCell.y == -2)
-            {
-                GameObject leftPiece = null;
-                GameObject rightPiece = null;
-                leftPiece = get_piece_at_coord(get_center_of_cell(get_cell_left_times(newCell, 1)));
-                rightPiece = get_piece_at_coord(get_center_of_cell(get_cell_right_times(newCell, 1)));
-                GameObject[] pieces = {leftPiece, rightPiece};
-
-                foreach (var piece in pieces)
-                {
-                    if (piece && piece.gameObject.tag != gameObject.tag)
-                    {
-                        Pawn pawnComponent = (Pawn) piece.GetComponentInChildren(typeof(Pawn));
-                        pawnComponent.enPassantRuleLinked.Add(gameObject);
-                    }
-                }
-            }
-        }
     }
 
     public bool is_free(Vector3Int cellPos)
@@ -126,6 +70,167 @@ public class ChessPiece : MonoBehaviour
         }
 
         return true;
+    }
+
+
+    public GameObject get_piece_at_coord(Vector3 coord)
+    {
+        GameObject pieceAtCoord = null;
+        List<String> pieceTypes = new List<string>
+        {
+            "White Piece",
+            "Black Piece"
+        };
+
+        foreach (var pieceType in pieceTypes)
+        {
+            GameObject[] chessPieces = GameObject.FindGameObjectsWithTag(pieceType);
+            foreach (var chessPiece in chessPieces)
+            {
+                if (coord == chessPiece.transform.position)
+                {
+                    pieceAtCoord = chessPiece;
+                }
+            }
+        }
+
+        return pieceAtCoord;
+    }
+
+    public GameObject[] get_mark_points()
+    {
+        GameObject[] markPoints = GameObject.FindGameObjectsWithTag("Mark Point");
+
+        return markPoints;
+    }
+
+    private void destroy_all_mark_points()
+    {
+        GameObject[] markPoints = get_mark_points();
+
+        foreach (var markPoint in markPoints)
+        {
+            Destroy(markPoint);
+        }
+    }
+
+    public void instantiate_mark_points(List<Vector3> coords)
+    {
+        foreach (var coord in coords)
+        {
+            Vector3 newCoord = coord;
+            newCoord.z -= 1;
+
+            GameObject markPoint = Instantiate(markPointPrefab, newCoord, Quaternion.identity);
+            MarkPointController markPointController = markPoint.GetComponent<MarkPointController>();
+            markPointController.connectedPieceGameObject = this;
+        }
+    }
+
+    public void handle_mark_points(List<Vector3> coords, GameObject obj)
+    {
+        GameObject[] markPoints = get_mark_points();
+
+        if (markPoints.Length <= 0)
+        {
+            instantiate_mark_points(coords);
+            markPoints = get_mark_points();
+
+            // Linking Mark Points 
+            Pawn pawnComponent = (Pawn) GetComponentInChildren(typeof(Pawn));
+            if (pawnComponent)
+            {
+                pawnComponent.link_en_passant_rule_objs_to_mark_points(markPoints);
+            }
+        }
+        else
+        {
+            destroy_all_mark_points();
+        }
+    }
+
+    public List<Vector3Int> get_whole_move_map_cells()
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Vector3> filter_out_own_pieces_and_outer_ones(List<Vector3> wholeMoveMapCenterCells)
+    {
+        List<Vector3> availableMoves = new List<Vector3>();
+        GameObject[] currentPieceColorObjects = GameObject.FindGameObjectsWithTag(gameObject.tag);
+        GameObject[] chessTileObjects = GameObject.FindGameObjectsWithTag("Tile");
+
+        foreach (var chessTileObject in chessTileObjects)
+        {
+            if (wholeMoveMapCenterCells.Contains(chessTileObject.transform.position))
+            {
+                availableMoves.Add(chessTileObject.transform.position);
+            }
+        }
+
+        foreach (var currentPieceColorObject in currentPieceColorObjects)
+        {
+            if (wholeMoveMapCenterCells.Contains(currentPieceColorObject.transform.position))
+            {
+                availableMoves.Remove(currentPieceColorObject.transform.position);
+            }
+        }
+
+        return availableMoves;
+    }
+
+    public List<Vector3> convert_into_whole_move_map_center_cells(List<Vector3Int> wholeMoveMapCells)
+    {
+        List<Vector3> wholeMoveMapCenterCells = new List<Vector3>();
+
+        foreach (var cell in wholeMoveMapCells)
+        {
+            Vector3 centerCell = get_center_of_cell(cell);
+            wholeMoveMapCenterCells.Add(centerCell);
+        }
+
+        return wholeMoveMapCenterCells;
+    }
+
+    public Vector3Int get_cell_up_times(Vector3Int cellPos, int amount)
+    {
+        cellPos.y += amount;
+        return cellPos;
+    }
+
+    public Vector3Int get_cell_right_times(Vector3Int cellPos, int amount)
+    {
+        cellPos.x += amount;
+        return cellPos;
+    }
+
+    public Vector3Int get_cell_left_times(Vector3Int cellPos, int amount)
+    {
+        cellPos.x -= amount;
+        return cellPos;
+    }
+
+    public Vector3Int get_cell_down_times(Vector3Int cellPos, int amount)
+    {
+        cellPos.y -= amount;
+        return cellPos;
+    }
+
+    public Vector3Int get_current_cell()
+    {
+        Vector3Int cellPosition = gridLayout.WorldToCell(transform.position);
+        return cellPosition;
+    }
+
+    public Vector3Int get_cell_from_coord(Vector3 coord)
+    {
+        return gridLayout.WorldToCell(coord);
+    }
+
+    public Vector3 get_center_of_cell(Vector3Int cellPos)
+    {
+        Vector3 worldPosition = grid.GetCellCenterWorld(cellPos);
+        return worldPosition;
     }
 
     public List<Vector3Int> get_all_up()
@@ -337,184 +442,10 @@ public class ChessPiece : MonoBehaviour
         return downRight;
     }
 
-    public GameObject get_piece_at_coord(Vector3 coord)
-    {
-        GameObject pieceAtCoord = null;
-        List<String> pieceTypes = new List<string>
-        {
-            "White Piece",
-            "Black Piece"
-        };
-
-        foreach (var pieceType in pieceTypes)
-        {
-            GameObject[] chessPieces = GameObject.FindGameObjectsWithTag(pieceType);
-            foreach (var chessPiece in chessPieces)
-            {
-                if (coord == chessPiece.transform.position)
-                {
-                    pieceAtCoord = chessPiece;
-                }
-            }
-        }
-
-        return pieceAtCoord;
-    }
-
-    private GameObject[] get_mark_points()
-    {
-        GameObject[] markPoints = GameObject.FindGameObjectsWithTag("Mark Point");
-
-        return markPoints;
-    }
-
-    private void destroy_all_mark_points()
-    {
-        GameObject[] markPoints = get_mark_points();
-
-        foreach (var markPoint in markPoints)
-        {
-            Destroy(markPoint);
-        }
-    }
-
-    public void instantiate_mark_points(List<Vector3> coords)
-    {
-        foreach (var coord in coords)
-        {
-            Vector3 newCoord = coord;
-            newCoord.z -= 1;
-
-            GameObject markPoint = Instantiate(markPointPrefab, newCoord, Quaternion.identity);
-            MarkPointController markPointController = markPoint.GetComponent<MarkPointController>();
-            markPointController.connectedPieceGameObject = this;
-        }
-    }
-
-    public void handle_mark_points(List<Vector3> coords, GameObject obj)
-    {
-        GameObject[] markPoints = get_mark_points();
-
-        if (markPoints.Length <= 0)
-        {
-            instantiate_mark_points(coords);
-            markPoints = get_mark_points();
-
-            link_en_passant_rule_objs_to_mark_points(obj, markPoints);
-        }
-        else
-        {
-            destroy_all_mark_points();
-        }
-    }
-
-
-    private void link_en_passant_rule_objs_to_mark_points(GameObject obj, GameObject[] markPoints)
-    {
-        if (gameObject.GetComponentInChildren(typeof(Pawn)))
-        {
-            Pawn pawnComponent = (Pawn) obj.GetComponentInChildren(typeof(Pawn));
-            foreach (var markPoint in markPoints)
-            {
-                MarkPointController markPointController =
-                    (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
-
-                foreach (var ob in pawnComponent.enPassantRuleLinked)
-                {
-                    markPointController.connectedKillGameObject = ob;
-                }
-            }
-        }
-    }
-
-    public List<Vector3Int> get_whole_move_map_cells()
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<Vector3> filter_out_own_pieces_and_outer_ones(List<Vector3> wholeMoveMapCenterCells)
-    {
-        List<Vector3> availableMoves = new List<Vector3>();
-        GameObject[] currentPieceColorObjects = GameObject.FindGameObjectsWithTag(gameObject.tag);
-        GameObject[] chessTileObjects = GameObject.FindGameObjectsWithTag("Tile");
-
-        foreach (var chessTileObject in chessTileObjects)
-        {
-            if (wholeMoveMapCenterCells.Contains(chessTileObject.transform.position))
-            {
-                availableMoves.Add(chessTileObject.transform.position);
-            }
-        }
-
-        foreach (var currentPieceColorObject in currentPieceColorObjects)
-        {
-            if (wholeMoveMapCenterCells.Contains(currentPieceColorObject.transform.position))
-            {
-                availableMoves.Remove(currentPieceColorObject.transform.position);
-            }
-        }
-
-        return availableMoves;
-    }
-
-    public List<Vector3> convert_into_whole_move_map_center_cells(List<Vector3Int> wholeMoveMapCells)
-    {
-        List<Vector3> wholeMoveMapCenterCells = new List<Vector3>();
-
-        foreach (var cell in wholeMoveMapCells)
-        {
-            Vector3 centerCell = get_center_of_cell(cell);
-            wholeMoveMapCenterCells.Add(centerCell);
-        }
-
-        return wholeMoveMapCenterCells;
-    }
-
-    public Vector3Int get_cell_up_times(Vector3Int cellPos, int amount)
-    {
-        cellPos.y += amount;
-        return cellPos;
-    }
-
-    public Vector3Int get_cell_right_times(Vector3Int cellPos, int amount)
-    {
-        cellPos.x += amount;
-        return cellPos;
-    }
-
-    public Vector3Int get_cell_left_times(Vector3Int cellPos, int amount)
-    {
-        cellPos.x -= amount;
-        return cellPos;
-    }
-
-    public Vector3Int get_cell_down_times(Vector3Int cellPos, int amount)
-    {
-        cellPos.y -= amount;
-        return cellPos;
-    }
-
     private String get_chess_piece()
     {
         String gameObjectName = gameObject.name;
         return gameObjectName;
-    }
-
-    public Vector3Int get_current_cell()
-    {
-        Vector3Int cellPosition = gridLayout.WorldToCell(transform.position);
-        return cellPosition;
-    }
-
-    public Vector3Int get_cell_from_coord(Vector3 coord)
-    {
-        return gridLayout.WorldToCell(coord);
-    }
-
-    public Vector3 get_center_of_cell(Vector3Int cellPos)
-    {
-        Vector3 worldPosition = grid.GetCellCenterWorld(cellPos);
-        return worldPosition;
     }
 
     private string[] get_chess_lang()

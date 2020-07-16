@@ -59,6 +59,4 @@ public class Queen : ChessPiece
 
         return cells;
     }
-    
-    
 }

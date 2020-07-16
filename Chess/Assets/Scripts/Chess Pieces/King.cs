@@ -14,10 +14,10 @@ public class King : ChessPiece
     private new void Awake()
     {
         base.Awake();
-        
+
         castlingConnectedLeftRook = get_left_rook();
         leftRookCellDestination = get_cell_left_times(get_current_cell(), 1);
-        
+
         castlingConnectedRighttRook = get_right_rook();
         rightRookCellDestination = get_cell_right_times(get_current_cell(), 1);
     }
@@ -118,5 +118,45 @@ public class King : ChessPiece
         }
 
         return null;
+    }
+
+    public void handle_castling_rule(Vector3Int oldCell, Vector3Int newCell)
+    {
+        GameObject[] markPoints = get_mark_points();
+
+        if (gameObject.GetComponentInChildren(typeof(King)) && timesMoved == 0)
+        {
+            // Left Rook
+            if (newCell.x - oldCell.x == -2)
+            {
+                foreach (var markPoint in markPoints)
+                {
+                    MarkPointController markPointController =
+                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                    if (leftRookCellDestination ==
+                        get_cell_from_coord(markPointController.transform.position))
+                    {
+                        castlingConnectedLeftRook.move(leftRookCellDestination);
+                    }
+                }
+            }
+
+            // Right Rook
+            if (newCell.x - oldCell.x == 2)
+            {
+                foreach (var markPoint in markPoints)
+                {
+                    MarkPointController markPointController =
+                        (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                    if (rightRookCellDestination ==
+                        get_cell_from_coord(markPointController.transform.position))
+                    {
+                        castlingConnectedRighttRook.move(rightRookCellDestination);
+                    }
+                }
+            }
+        }
     }
 }

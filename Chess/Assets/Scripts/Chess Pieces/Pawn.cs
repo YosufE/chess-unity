@@ -87,7 +87,7 @@ public class Pawn : ChessPiece
             {
                 cells.Add(up2);
             }
-            
+
             foreach (var obj in enPassantRuleLinked)
             {
                 if (obj != null)
@@ -104,5 +104,50 @@ public class Pawn : ChessPiece
 
 
         return cells;
+    }
+
+    public void link_en_passant_rule_objs_to_mark_points(GameObject[] markPoints)
+    {
+        if (gameObject.GetComponentInChildren(typeof(Pawn)))
+        {
+            Pawn pawnComponent = (Pawn) GetComponentInChildren(typeof(Pawn));
+            foreach (var markPoint in markPoints)
+            {
+                MarkPointController markPointController =
+                    (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
+
+                foreach (var ob in pawnComponent.enPassantRuleLinked)
+                {
+                    markPointController.connectedKillGameObject = ob;
+                }
+            }
+        }
+    }
+
+    public void handle_en_passant(Vector3Int oldCell, Vector3Int newCell)
+    {
+        if (gameObject.GetComponentInChildren(typeof(Pawn)))
+        {
+            if (newCell.y - oldCell.y == 2 || newCell.y - oldCell.y == -2)
+            {
+                GameObject leftPiece = null;
+                GameObject rightPiece = null;
+                leftPiece = get_piece_at_coord(get_center_of_cell(get_cell_left_times(newCell, 1)));
+                rightPiece = get_piece_at_coord(get_center_of_cell(get_cell_right_times(newCell, 1)));
+                GameObject[] pieces = {leftPiece, rightPiece};
+
+                foreach (var piece in pieces)
+                {
+                    if (piece && piece.gameObject.tag != gameObject.tag)
+                    {
+                        Pawn pawnComponent = (Pawn) piece.GetComponentInChildren(typeof(Pawn));
+                        if (pawnComponent)
+                        {
+                            pawnComponent.enPassantRuleLinked.Add(gameObject);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
