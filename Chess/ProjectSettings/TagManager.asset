@@ -9,6 +9,7 @@ TagManager:
   - White Piece
   - Mark Point
   - Upgrade Menu
+  - Turn Controller
   layers:
   - Default
   - TransparentFX

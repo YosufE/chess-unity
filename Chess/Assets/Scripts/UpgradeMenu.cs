@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Chess_Pieces;
 using UnityEngine;
 using UnityEngine.UI;
 

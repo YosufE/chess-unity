@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527e4da449c7405ba86023723db3416a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endMenu: {fileID: 8670291942785684758, guid: bd64a5ffd6336e849b9cb56ed13ce3b4, type: 3}
   currentTurn: White Piece
   otherTurn: Black Piece

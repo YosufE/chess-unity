@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Chess_Pieces;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnController : MonoBehaviour
 {
+    public GameObject endMenu;
     public String currentTurn = "White Piece";
     public String otherTurn = "Black Piece";
 
@@ -57,5 +60,15 @@ public class TurnController : MonoBehaviour
         GameObject[] currentPieces = GameObject.FindGameObjectsWithTag(currentTurn);
 
         return currentPieces;
+    }
+
+    public void show_end_screen()
+    {
+        Instantiate(endMenu);
+    }
+
+    public void reload_scene_completely()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

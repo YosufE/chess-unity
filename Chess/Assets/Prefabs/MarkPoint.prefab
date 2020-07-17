@@ -121,4 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4c82bd4f4a63904bbdfb9fd56d39b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnController: {fileID: 2744078725232528248, guid: 6f66e05b16a8758428e25d21f73a4aed,
+    type: 3}
   connectedPieceGameObject: {fileID: 0}
+  connectedKillGameObject: {fileID: 0}
