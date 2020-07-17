@@ -17,6 +17,7 @@
             <e p="Rook.cs" t="Include" />
           </e>
           <e p="MarkPointController.cs" t="Include" />
+          <e p="TurnController.cs" t="Include" />
           <e p="UpgradeMenu.cs" t="Include" />
         </e>
       </e>

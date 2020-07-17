@@ -9,6 +9,7 @@ public class ChessPiece : MonoBehaviour
 {
     public GameObject markPointPrefab;
     public int timesMoved = 0;
+    public TurnController turnController;
 
     private GridLayout gridLayout;
     private Grid grid;
@@ -16,6 +17,8 @@ public class ChessPiece : MonoBehaviour
 
     public void Awake()
     {
+        GameObject turnControllerGameObject = GameObject.FindGameObjectWithTag("Turn Controller");
+        turnController = (TurnController) turnControllerGameObject.GetComponentInChildren(typeof(TurnController));
         gridLayout = transform.parent.GetComponentInParent<GridLayout>();
         grid = transform.parent.GetComponentInParent<Grid>();
     }
@@ -60,6 +63,7 @@ public class ChessPiece : MonoBehaviour
             kingComponent.handle_castling_rule(oldCell, newCell);
         }
 
+        turnController.handle_turn();
         timesMoved += 1;
     }
 
