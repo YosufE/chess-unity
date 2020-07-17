@@ -8,6 +8,7 @@ TagManager:
   - Black Piece
   - White Piece
   - Mark Point
+  - Upgrade Menu
   layers:
   - Default
   - TransparentFX

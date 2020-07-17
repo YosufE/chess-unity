@@ -1,12 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Pawn : ChessPiece
 {
     public bool inverted;
+    public GameObject upgradeMenuPrefab;
+    UpgradeMenu upgradeMenu;
     public List<GameObject> enPassantRuleLinked;
+
+    [Header("White Pieces Prefabs")] public GameObject whiteQueenPrefab;
+    public GameObject whiteRookPrefab;
+    public GameObject whiteBishopPrefab;
+    public GameObject whiteKnightPrefab;
+
+    [Header("Black Pieces Prefabs")] public GameObject blackQueenPrefab;
+    public GameObject blackRookPrefab;
+    public GameObject blackBishopPrefab;
+    public GameObject blackKnightPrefab;
+
 
     private void OnMouseDown()
     {
@@ -148,6 +163,124 @@ public class Pawn : ChessPiece
                     }
                 }
             }
+        }
+    }
+
+    public void handle_upgrade(Vector3Int oldCell, Vector3Int newCell)
+    {
+        if ((inverted && newCell.y == 1) || (inverted == false && newCell.y == 8))
+        {
+            disable_all_piece_colliders();
+
+            GameObject upgradeMenuGameObject = Instantiate(upgradeMenuPrefab);
+            upgradeMenu = (UpgradeMenu) upgradeMenuGameObject.GetComponentInChildren(typeof(UpgradeMenu));
+            upgradeMenu.connectedPawn = this;
+            upgradeMenu.connectButtons();
+        }
+    }
+
+    public void convert_to_queen()
+    {
+        GameObject newQueenObject;
+        if (gameObject.tag == "White Piece")
+        {
+            newQueenObject = Instantiate(whiteQueenPrefab, transform.parent, true);
+        }
+        else
+        {
+            newQueenObject = Instantiate(blackQueenPrefab, transform.parent, true);
+        }
+
+        Queen queenComponent = (Queen) newQueenObject.GetComponentInChildren(typeof(Queen));
+        queenComponent.move(get_current_cell());
+        destroy_all_upgrade_menus();
+        enable_all_piece_colliders();
+    }
+
+    public void convert_to_rook()
+    {
+        GameObject newRookObject;
+        if (gameObject.tag == "White Piece")
+        {
+            newRookObject = Instantiate(whiteRookPrefab, transform.parent, true);
+        }
+        else
+        {
+            newRookObject = Instantiate(blackRookPrefab, transform.parent, true);
+        }
+
+        Rook rookComponent = (Rook) newRookObject.GetComponentInChildren(typeof(Rook));
+        rookComponent.move(get_current_cell());
+        destroy_all_upgrade_menus();
+        enable_all_piece_colliders();
+    }
+
+    public void convert_to_bishop()
+    {
+        GameObject newBishopObject;
+        if (gameObject.tag == "White Piece")
+        {
+            newBishopObject = Instantiate(whiteBishopPrefab, transform.parent, true);
+        }
+        else
+        {
+            newBishopObject = Instantiate(blackBishopPrefab, transform.parent, true);
+        }
+
+        Bishop bishopComponent = (Bishop) newBishopObject.GetComponentInChildren(typeof(Bishop));
+        bishopComponent.move(get_current_cell());
+        destroy_all_upgrade_menus();
+        enable_all_piece_colliders();
+    }
+
+    public void convert_to_knight()
+    {
+        GameObject newKnightObject;
+        if (gameObject.tag == "White Piece")
+        {
+            newKnightObject = Instantiate(whiteKnightPrefab, transform.parent, true);
+        }
+        else
+        {
+            newKnightObject = Instantiate(blackKnightPrefab, transform.parent, true);
+        }
+
+        Knight knightComponent = (Knight) newKnightObject.GetComponentInChildren(typeof(Knight));
+        knightComponent.move(get_current_cell());
+        destroy_all_upgrade_menus();
+        enable_all_piece_colliders();
+    }
+
+    private GameObject[] get_all_upgrade_menu_game_objects()
+    {
+        GameObject[] upgradeMenuGameObjects = GameObject.FindGameObjectsWithTag("Upgrade Menu");
+        return upgradeMenuGameObjects;
+    }
+
+    private void destroy_all_upgrade_menus()
+    {
+        GameObject[] upgradeMenus = get_all_upgrade_menu_game_objects();
+        foreach (var upgradeMenu in upgradeMenus)
+        {
+            Destroy(upgradeMenu);
+        }
+    }
+
+    private void disable_all_piece_colliders()
+    {
+        List<GameObject> allPieces = get_all_pieces();
+        foreach (var piece in allPieces)
+        {
+            piece.GetComponent<BoxCollider2D>().enabled = false;
+        }
+    }
+
+    private void enable_all_piece_colliders()
+    {
+        List<GameObject> allPieces = get_all_pieces();
+        foreach (var piece in allPieces)
+        {
+            piece.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 }

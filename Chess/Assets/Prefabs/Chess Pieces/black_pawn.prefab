@@ -126,3 +126,22 @@ MonoBehaviour:
     type: 3}
   timesMoved: 0
   inverted: 1
+  upgradeMenuPrefab: {fileID: 2706231765429899467, guid: e5c24bdf2a8e53040800b2e0de420c0d,
+    type: 3}
+  enPassantRuleLinked: []
+  whiteQueenPrefab: {fileID: 8208313288743658155, guid: 91045310a8d7e4542a1a2b77a33182c9,
+    type: 3}
+  whiteRookPrefab: {fileID: 390699121962454058, guid: 73cb63bfc20380c4dab65eb884b32f88,
+    type: 3}
+  whiteBishopPrefab: {fileID: 6799654724066781172, guid: 3a0bd558c3976b64b80c791850970d01,
+    type: 3}
+  whiteKnightPrefab: {fileID: 7917491631033889539, guid: 80d2746fb1964554cac07c5c8cd5c572,
+    type: 3}
+  blackQueenPrefab: {fileID: 8267883754337054388, guid: c237af2980d702c448f543cab35e215d,
+    type: 3}
+  blackRookPrefab: {fileID: 3995354531314110481, guid: c86ca5558a89b7c44a1d4c138c7fb546,
+    type: 3}
+  blackBishopPrefab: {fileID: 7272476184420201349, guid: 8cec0ca7dc521104e966e0ab19284153,
+    type: 3}
+  blackKnightPrefab: {fileID: 3036896998152843592, guid: 8ae167c8d6324364da554efd55c94a73,
+    type: 3}

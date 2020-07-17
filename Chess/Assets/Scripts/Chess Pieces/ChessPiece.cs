@@ -50,6 +50,7 @@ public class ChessPiece : MonoBehaviour
         if (pawnComponent)
         {
             pawnComponent.handle_en_passant(oldCell, newCell);
+            pawnComponent.handle_upgrade(oldCell, newCell);
         }
 
         // ---- King ----
@@ -190,6 +191,27 @@ public class ChessPiece : MonoBehaviour
         }
 
         return wholeMoveMapCenterCells;
+    }
+
+    public List<GameObject> get_all_pieces()
+    {
+        List<GameObject> allPieces = new List<GameObject>();
+        List<String> pieceTypes = new List<string>
+        {
+            "White Piece",
+            "Black Piece"
+        };
+
+        foreach (var pieceType in pieceTypes)
+        {
+            GameObject[] chessPieces = GameObject.FindGameObjectsWithTag(pieceType);
+            foreach (var chessPiece in chessPieces)
+            {
+                allPieces.Add(chessPiece);
+            }
+        }
+
+        return allPieces;
     }
 
     public Vector3Int get_cell_up_times(Vector3Int cellPos, int amount)
