@@ -47,16 +47,14 @@ namespace Chess_Pieces
             destroy_all_mark_points();
             transform.position = newCellCenter;
 
-            King otherKingComponent;
+            King otherKingComponent = null;
             try
             {
                 otherKingComponent = (King) pieceAtCoord.GetComponentInChildren(typeof(King));
             }
-            catch (Exception e)
+            catch
             {
-                otherKingComponent = null;
             }
-
 
             if (otherKingComponent)
             {
@@ -65,6 +63,7 @@ namespace Chess_Pieces
             }
             else
             {
+                // If killed Piece is NOT a King
                 // Rule handling
                 // ---- Pawn ----
                 Pawn pawnComponent = (Pawn) GetComponentInChildren(typeof(Pawn));
@@ -84,9 +83,10 @@ namespace Chess_Pieces
                 turnController.handle_turn();
             }
 
+
             timesMoved += 1;
         }
-        
+
         public void disable_all_piece_colliders()
         {
             List<GameObject> allPieces = get_all_pieces();
