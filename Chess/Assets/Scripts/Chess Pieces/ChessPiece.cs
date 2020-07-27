@@ -69,7 +69,7 @@ namespace Chess_Pieces
                 Pawn pawnComponent = (Pawn) GetComponentInChildren(typeof(Pawn));
                 if (pawnComponent)
                 {
-                    pawnComponent.handle_en_passant(oldCell, newCell);
+                    pawnComponent.link_kill_en_passant(oldCell, newCell);
                     pawnComponent.handle_upgrade(oldCell, newCell);
                 }
 
@@ -79,12 +79,35 @@ namespace Chess_Pieces
                 {
                     kingComponent.handle_castling_rule(oldCell, newCell);
                 }
+                unlink_all_current_en_passants();
 
+                
                 turnController.handle_turn();
             }
-
-
+            
             timesMoved += 1;
+        }
+
+        public void unlink_all_current_en_passants()
+        {
+            List<GameObject> allPieces = get_all_pieces();
+            foreach (var piece in allPieces)
+            {
+                try
+                {
+                    Pawn pawnComponent = (Pawn) piece.GetComponentInChildren(typeof(Pawn));
+                    if (pawnComponent && pawnComponent.gameObject.tag == gameObject.tag)
+                    {
+                        pawnComponent.enPassantRuleLinked.Clear();
+                        Debug.Log(pawnComponent.enPassantRuleLinked.Count);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            
         }
 
         public void disable_all_piece_colliders()

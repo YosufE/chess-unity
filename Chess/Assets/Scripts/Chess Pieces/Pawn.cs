@@ -157,7 +157,7 @@ namespace Chess_Pieces
             }
         }
 
-        public void handle_en_passant(Vector3Int oldCell, Vector3Int newCell)
+        public void link_kill_en_passant(Vector3Int oldCell, Vector3Int newCell)
         {
             if (gameObject.GetComponentInChildren(typeof(Pawn)))
             {
