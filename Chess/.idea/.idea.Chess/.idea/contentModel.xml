@@ -10,11 +10,15 @@
           <e p="Chess Pieces" t="Include">
             <e p="Bishop.cs" t="Include" />
             <e p="ChessPiece.cs" t="Include" />
+            <e p="Grid.cs" t="Include" />
             <e p="King.cs" t="Include" />
             <e p="Knight.cs" t="Include" />
             <e p="Pawn.cs" t="Include" />
             <e p="Queen.cs" t="Include" />
             <e p="Rook.cs" t="Include" />
+            <e p="transform.cs" t="Include" />
+            <e p="Vector3.cs" t="Include" />
+            <e p="Vector3Int.cs" t="Include" />
           </e>
           <e p="MarkPointController.cs" t="Include" />
           <e p="TurnController.cs" t="Include" />

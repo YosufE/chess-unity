@@ -129,9 +129,29 @@ namespace Chess_Pieces
                     MarkPointController markPointController =
                         (MarkPointController) markPoint.GetComponentInChildren(typeof(MarkPointController));
 
-                    foreach (var ob in pawnComponent.enPassantRuleLinked)
+                    foreach (var killGameObject in pawnComponent.enPassantRuleLinked)
                     {
-                        markPointController.connectedKillGameObject = ob;
+                        Pawn pawnComp = (Pawn) killGameObject.GetComponentInChildren(typeof(Pawn));
+                        if (inverted)
+                        {
+                            Vector3 killMarkPoint =
+                                get_center_of_cell(get_cell_down_times(pawnComp.get_current_cell(), 1));
+                            if (markPointController.transform.position.x == killMarkPoint.x &&
+                                markPointController.transform.position.y == killMarkPoint.y)
+                            {
+                                markPointController.connectedKillGameObject = killGameObject;
+                            }
+                        }
+                        else
+                        {
+                            Vector3 killMarkPoint =
+                                get_center_of_cell(get_cell_up_times(pawnComp.get_current_cell(), 1));
+                            if (markPointController.transform.position.x == killMarkPoint.x &&
+                                markPointController.transform.position.y == killMarkPoint.y)
+                            {
+                                markPointController.connectedKillGameObject = killGameObject;
+                            }
+                        }
                     }
                 }
             }
